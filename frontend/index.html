@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Information Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Student Records</h1>
+        <p>Information Management System</p>
+      </div>
+      <nav id="nav" aria-label="Main">
+        <button data-view="home" class="active">Home</button>
+        <button data-view="add">Add student</button>
+        <button data-view="list">Student list</button>
+        <button data-view="search">Search student</button>
+      </nav>
+      <div class="status" id="status" role="status">
+        <span class="dot"></span><span id="statusText">Checking server…</span>
+      </div>
+    </aside>
+
+    <main>
+      <div id="toast" class="toast" role="alert" hidden></div>
+
+      <!-- HOME -->
+      <section id="view-home" class="view">
+        <h2>Home</h2>
+        <p class="lead">Keep every student's details in one place. Records are stored in MongoDB Atlas and served by the Render API.</p>
+        <div class="stat-row">
+          <div class="stat"><span id="statTotal">–</span><label>Students enrolled</label></div>
+          <div class="stat"><span id="statDepts">–</span><label>Departments</label></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" data-go="add">Add a student</button>
+          <button class="btn" data-go="list">View all records</button>
+        </div>
+        <div class="flow">
+          <div>Browser</div><i>→</i><div>Netlify<small>frontend</small></div><i>→</i>
+          <div>Render<small>REST API</small></div><i>→</i><div>MongoDB Atlas<small>database</small></div>
+        </div>
+      </section>
+
+      <!-- ADD / EDIT FORM -->
+      <section id="view-add" class="view" hidden>
+        <h2 id="formTitle">Add student</h2>
+        <form id="studentForm" novalidate>
+          <div class="grid">
+            <div class="field">
+              <label for="studentId">Student ID</label>
+              <input id="studentId" name="studentId" placeholder="ST101" maxlength="20" required />
+            </div>
+            <div class="field">
+              <label for="name">Full name</label>
+              <input id="name" name="name" placeholder="Rahul Sharma" maxlength="100" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="rahul@example.com" required />
+            </div>
+            <div class="field">
+              <label for="department">Department</label>
+              <input id="department" name="department" placeholder="Computer Science" maxlength="100" required />
+            </div>
+            <div class="field">
+              <label for="semester">Semester (1–8)</label>
+              <input id="semester" name="semester" type="number" min="1" max="8" placeholder="5" required />
+            </div>
+            <div class="field">
+              <label for="contact">Contact number <span class="opt">optional</span></label>
+              <input id="contact" name="contact" inputmode="numeric" placeholder="9876543210" maxlength="10" />
+            </div>
+          </div>
+          <p class="form-error" id="formError" hidden></p>
+          <div class="actions">
+            <button class="btn primary" type="submit" id="submitBtn">Add student</button>
+            <button class="btn" type="button" id="cancelEdit" hidden>Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- LIST -->
+      <section id="view-list" class="view" hidden>
+        <h2>Student list</h2>
+        <div id="listTable"></div>
+      </section>
+
+      <!-- SEARCH -->
+      <section id="view-search" class="view" hidden>
+        <h2>Search student</h2>
+        <form id="searchForm" class="searchbar">
+          <input id="searchInput" placeholder="Student ID, name, email or department" aria-label="Search" />
+          <button class="btn primary" type="submit">Search</button>
+        </form>
+        <div id="searchTable"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="confirmDialog">
+    <form method="dialog">
+      <h3>Delete this student?</h3>
+      <p id="confirmText"></p>
+      <div class="actions">
+        <button class="btn" value="cancel">Keep record</button>
+        <button class="btn danger" value="delete">Delete student</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
